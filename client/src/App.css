@@ -1,0 +1,74 @@
+.App {
+  display:flex;
+  flex-direction: column;
+  justify-content:center;
+}
+
+.information {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width:50%;
+  margin-top: 15px;
+}
+
+.table {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 30px;
+}
+
+.page {
+  display: flex;
+  flex-direction: row;
+  width: auto;
+  padding-bottom: 15px;
+}
+
+.AddButton {
+  margin-top: 15px;
+}
+
+.TextField {
+  height: 50px;
+}
+
+label {
+  margin-top: 15px;
+}
+
+.AddButton {
+  margin-bottom: 15px;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.delete {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 30px;
+  padding: 15px;
+  margin-bottom: 15px;
+}
+
+.hideAndDelete {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.tablebutton {
+  display: flex;
+  flex-direction: column;
+  padding: 15px;
+  margin: 30px;
+}
