@@ -54,6 +54,8 @@ app.post('/create', (req,res) => {
           res.send(result)
         }
       })
+}else {
+  res.send(null)
 }} 
   })
 });
@@ -71,49 +73,23 @@ app.post('/finalize', (req, res) => {
     } else {
       if (result[0] != null) {
         let customerid = result[0]['customerid']
-        db.query('UPDATE quote SET freeze = 1 WHERE (customerid = ?)', [customerid]), (err, result) => {
+        db.query('UPDATE quote SET freeze = 1 WHERE (customerid = ?)', [customerid], (err, result) => {
           if (err) {
             console.log(err)
           } else {
-            console.log('success')
+            res.send(result)
           }
-        }
+        })
+  } else {
+    res.send(result)
+    console.log("No rows found")
   }
 }} 
   )
 
 })
-
-
-
-
 ////////////////////////////////////////////////////////////////////////////////////
-//When /delete is used
-app.post('/delete', (req, res) => {
-  const bodySite = req.body.deleteSite
 
-  db.query("DELETE FROM sizer WHERE (site = ?)", [bodySite]), (err,result) => {
-    if (err){
-      console.log(err)
-    } 
-  }
-
-  db.query("DELETE FROM qidtab WHERE (site = ?)", [bodySite]), (err,result) => {
-    if (err){
-      console.log(err)
-    } 
-  }
-
-  db.query("SELECT * FROM sizer", (err, result) => {
-    if (err) {
-      console.log(err)
-    } else {
-      res.send(result)
-    };
-  });
-
-});
-//////////////////////////////////////////////////////////////////////////////////////
 
 
 

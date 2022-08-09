@@ -29,22 +29,18 @@ function App() {
   //List of employees for the print
   const[employeeList, setEmployeeList] = useState([]);
 
-  //Deleting a row in the database table
-  const [deleteSite, setDeletesite] = useState();
 
   //Searching rows in the database table
   ////////////////////////////////////////
   const [searchSite, setSearchSite] = useState();
 
-  //Finalizing a customer id in the sql table
-  const [finalizeID, setFinalizeID] = useState();
 
 
 
   //sends information from the front end to the backend
   //After sending the info to the backend it then returns
   //All table data from the backend and displays it nicely
-  const addSite = () => {console.log(site);
+  const addSite = () => {console.log(tempcustomer);
     //Checks if the variables are empty and displays an alert for now
     //The error message doesn't display exactly what the issue is as of now
     if (site == null ||
@@ -57,7 +53,7 @@ function App() {
         tempcustomer == null){
       return alert("Invalid Input")
     }
-    alert("Information has been added to the database!")
+    //alert("Information has been added to the database!")
     //PT 1 sends information to the backend
     Axios.post('http://localhost:3001/create',
     {site:site,
@@ -67,7 +63,8 @@ function App() {
     estimatedgrowth:estimatedgrowth,
     averagefilesize:averagefilesize,
     numfiles:numfiles,
-    tempcustomer:tempcustomer}).then(() => {
+    tempcustomer:tempcustomer}).then((response) => {
+      console.log("hello");
       setEmployeeList([
         ...employeeList,
          {site:site,
@@ -80,19 +77,15 @@ function App() {
          tempcustomer:tempcustomer
          },
        ])
+       console.log("response, ");
+       if (response.data == null){
+        return alert("No CustomerID found")
+       }
     })
   };
 
 //////////////////////////////////////////////////////////////////////////
-  //Delete
-  const removeRow = () => {console.log(deleteSite);
-    if (deleteSite == null){
-      return alert("Invalid Input")
-    }
-    Axios.post('http://localhost:3001/delete',
-  {deleteSite:deleteSite});
-};
-/////////////////////////////////////////////////////////////////////////
+
 
 
 ////////////////////////////////////////////////////////////////////////////
@@ -102,7 +95,14 @@ const finalizeQuote = () => {console.log(customer);
     return alert("Invalid Finalization Value (Cannot be null)")
   }
   Axios.post('http://localhost:3001/finalize',
-  {customer:customer});
+  {customer:customer}).then((response) => {
+    console.log(response.data.length)
+    if (response.data.length !== 0){
+      alert("Information finalized")
+    } else {
+      alert("Error occured while attempting to add")
+    }
+  })
 }
 
 
@@ -127,7 +127,7 @@ const finalizeQuote = () => {console.log(customer);
     }
     Axios.post('http://localhost:3001/search',
   {searchSite:searchSite}).then((response) => {
-    if (response.data.length == 0){
+    if (response.data.length === 0){
       return alert("No rows for customer: " + searchSite + " exist.")
     }
     console.log(response.data)
@@ -178,7 +178,7 @@ const finalizeQuote = () => {console.log(customer);
             <TextField type = "text"
             onChange={(event) => {setTempCustomer(event.target.value)}}/>
             <div className = 'AddButton'>
-              <Button variant="outlined" onClick = {addSite}>Add</Button>
+              <Button variant="outlined" onClick = {addSite}>Add Row</Button>
             </div>
           </Paper>
 
