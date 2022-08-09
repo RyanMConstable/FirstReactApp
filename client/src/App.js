@@ -36,6 +36,9 @@ function App() {
   ////////////////////////////////////////
   const [searchSite, setSearchSite] = useState();
 
+  //Finalizing a customer id in the sql table
+  const [finalizeID, setFinalizeID] = useState();
+
 
 
   //sends information from the front end to the backend
@@ -88,10 +91,24 @@ function App() {
     }
     Axios.post('http://localhost:3001/delete',
   {deleteSite:deleteSite});
-  getInfo()
 };
 /////////////////////////////////////////////////////////////////////////
 
+
+////////////////////////////////////////////////////////////////////////////
+//FINALIZE FUNCTION
+const finalizeQuote = () => {console.log(customer);
+  if (customer == null){
+    return alert("Invalid Finalization Value (Cannot be null)")
+  }
+  Axios.post('http://localhost:3001/finalize',
+  {customer:customer});
+}
+
+
+
+
+///////////////////////////////////////////////////////////////////////////
 
 
 
@@ -133,14 +150,6 @@ function App() {
     <div className="App">
       <Paper elevation = {10} className = "page">
 
-        <div className = "info">
-            <Paper elevation = {10} className = "information">
-              <label>Customer</label>
-              <TextField type = "text"
-              onChange={(event) => {setCustomer(event.target.value)}}/>
-              <Button variant="outlined" onClick = {addCustomer}>Add</Button>
-            </Paper>
-        </div>
 
         <div className = "information">
           <Paper elevation = {10} className = "information">
@@ -170,16 +179,16 @@ function App() {
             onChange={(event) => {setTempCustomer(event.target.value)}}/>
             <div className = 'AddButton'>
               <Button variant="outlined" onClick = {addSite}>Add</Button>
-              <Button variant = "outlined">Finalize</Button>
             </div>
           </Paper>
 
           <div className = "hideAndDelete">
             <div>
               <Paper elevation = {10}className = "delete">
-                <TextField type = "number"variant = "outlined"
-                onChange={(event) => {setDeletesite(event.target.value)}}/>
-                <Button  onClick = {removeRow} variant = "outlined">Delete</Button>
+                <TextField variant = "outlined"
+                onChange={(event) => {setCustomer(event.target.value)}}/>
+                <Button  onClick = {addCustomer} variant = "outlined">Add Customer</Button>
+                <Button variant = "outlined" onClick = {finalizeQuote}>Finalize</Button>
               </Paper>
             </div>
 

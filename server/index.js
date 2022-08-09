@@ -61,6 +61,30 @@ app.post('/create', (req,res) => {
 
 
 
+/////////////////////////////////////////////////////////////////////////////////////
+//When finalize is used
+app.post('/finalize', (req, res) => {
+  const bodyCustomer = req.body.customer
+  db.query("SELECT customerid FROM customer WHERE (customerName = ?)", [bodyCustomer], (err, result) => {
+    if (err) {
+      console.log(err)
+    } else {
+      if (result[0] != null) {
+        let customerid = result[0]['customerid']
+        db.query('UPDATE quote SET freeze = 1 WHERE (customerid = ?)', [customerid]), (err, result) => {
+          if (err) {
+            console.log(err)
+          } else {
+            console.log('success')
+          }
+        }
+  }
+}} 
+  )
+
+})
+
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////
