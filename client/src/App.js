@@ -111,7 +111,7 @@ function App() {
     Axios.post('http://localhost:3001/search',
   {searchSite:searchSite}).then((response) => {
     if (response.data.length == 0){
-      return alert("No row found")
+      return alert("No rows for customer: " + searchSite + " exist.")
     }
     console.log(response.data)
     setEmployeeList(response.data)
@@ -170,6 +170,7 @@ function App() {
             onChange={(event) => {setTempCustomer(event.target.value)}}/>
             <div className = 'AddButton'>
               <Button variant="outlined" onClick = {addSite}>Add</Button>
+              <Button variant = "outlined">Finalize</Button>
             </div>
           </Paper>
 
@@ -184,7 +185,7 @@ function App() {
 
             <div>
               <Paper elevation = {10} className = "tablebutton">
-              <TextField type = "number"variant = "outlined"
+              <TextField variant = "outlined"
                 onChange={(event) => {setSearchSite(event.target.value)}}/>
                 <Button  onClick = {searchItem} variant = "outlined">Search</Button>
                 <Button onClick = {getInfo} variant = "outlined">Show All</Button>

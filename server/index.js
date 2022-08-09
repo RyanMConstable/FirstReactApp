@@ -40,16 +40,21 @@ app.post('/create', (req,res) => {
       console.log(err)
     } else {
       if (result[0] != null) {
-        var customerid = result[0]['customerid']
+        let customerid = result[0]['customerid']
       db.query("INSERT INTO quote (site, location, numusers, totaldata, estimatedgrowth, avgfilesize, numfiles, customerid, freeze) VALUES (?,?,?,?,?,?,?,?,?)",
   [site, location, numofusers, totalamountofdata, estimatedgrowth, averagefilesize, numfiles, customerid, freeze]), (err, result) => {
-    if (err){
+    if (err) {
       console.log(err)
-    } else {
-      res.send(result)
     }
   }
-}}
+      db.query("SELECT site, location, numusers AS numofusers, totaldata AS totalamountofdata, estimatedgrowth, avgfilesize AS averagefilesize, numfiles FROM quote WHERE (customerid = ?)", [customerid], (err, result) => {
+        if (err) {
+          console.log(err)
+        } else {
+          res.send(result)
+        }
+      })
+}} 
   })
 });
 ////////////////////////////////////////////////////////////////////////////////////
@@ -136,17 +141,17 @@ app.post('/addCustomer', (req,res) => {
 //When /search is used
 app.post('/search', (req, res) => {
   const bodySite = req.body.searchSite
-  console.log(bodySite)
+  //console.log(bodySite)
   db.query("SELECT customerid FROM customer WHERE (customerName = ?)", [bodySite], (err,result) => {
-    var newcust = result[0]['customerid']
-    console.log(newcust)
     if (err){
       console.log(err)
-    } else {
-      db.query("SELECT site, location, numusers, totaldata, estimatedgrowth, avgfilesize, numfiles FROM quote WHERE (customerid = ?)", [newcust], (err, result) => {
+    } else if (result[0] != null){
+      var newcust = result[0]['customerid']
+      db.query("SELECT site, location, numusers AS numofusers, totaldata AS totalamountofdata, estimatedgrowth, avgfilesize AS averagefilesize, numfiles FROM quote WHERE (customerid = ?)", [newcust], (err, result) => {
         if (err) {
           console.log(err)
         } else {
+          //console.log(result)
           res.send(result)
         }
       })
@@ -162,7 +167,7 @@ app.post('/search', (req, res) => {
 ///////////////////////////////////////////////////////////////////////////////////////////
 //Takes every table from the MYSql table
 app.get('/getinfo', (req, res) => {
-  db.query("SELECT * FROM sizer", (err, result) => {
+  db.query("SELECT site, location, numusers AS numofusers, totaldata AS totalamountofdata, estimatedgrowth, avgfilesize AS averagefilesize, numfiles FROM quote", (err, result) => {
     if (err) {
       console.log(err)
     } else {
